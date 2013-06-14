@@ -31,3 +31,13 @@
 .tt-lista {
   margin-top: 65px;
 }
+.sign-up, .login {
+  margin-left: 10px;
+}
+.search-area {
+  border: 1px solid #e3e3e3;
+  background: #e3e3e3;
+  width: 800px;
+  border-radius: 8px;
+  padding-top: 15px;
+}
