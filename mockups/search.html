@@ -2,7 +2,7 @@
 <html>
   
   <head>
-    <title>search</title>
+    <title>Pra onde eu vou? - Busca</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <link rel="stylesheet" href="themes/cerulean/bootstrap.css">
@@ -26,6 +26,9 @@
           }
           return false;
         });
+        $('.bt-submit-search').click(function() {
+          location.href = 'lista.html';
+        });
       });
     </script>
   </head>
@@ -34,11 +37,11 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">Pra onde eu vou?</a>
+          <a class="brand" href="search.html">Pra onde eu vou?</a>
           <div class="navbar-content">
             <ul class="nav ">
               <li class="active">
-                <a href="#">Buscar</a> 
+                <a href="search.html">Buscar</a> 
               </li>
               <li>
                 <a href="#">Sobre</a> 
@@ -57,7 +60,7 @@
         <div class="container search-area">
             <p class="search-center">
               <input type="text" class="large-input input-medium" placeholder="Ex: #praia #crianças">
-              <a class="btn btn-large btn-inverse btn-al-top" href="#"><span class="btn-label">Pesquisar</span></a> 
+              <a class="btn btn-large btn-inverse btn-al-top" href="lista.html"><span class="btn-label">Pesquisar</span></a> 
             </p>
             <p class="search-center hint-src">Digite o que você gostaria de fazer. Ex.: #praia #crianças #avião</p>
             <a class="advanced-search" href="#"><span class="btn-label advanced-serach-btn">Busca avançada <span class="btn-arrow">&darr;</span></span></a>
@@ -100,12 +103,12 @@
               </div>
               <div style="clear: both;"></div>
               <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Pesquisar</button>
+                <button type="submit" class="bt-submit-search btn btn-primary">Pesquisar</button>
                 <input type="reset" class="btn" value="Limpar filtros"> 
               </div>
             </div>
       </div>
-      <a class="btn btn-large btn-primary btn-block visible-phone" href="#"><span class="btn-label">Pesquisar</span></a>
+      <a class="btn btn-large btn-primary btn-block visible-phone" href="#"><span class="bt-submit-search btn-label">Pesquisar</span></a>
       <div class="row main-features">
         <div class="span4"></div>
         <div class="span4"></div>
