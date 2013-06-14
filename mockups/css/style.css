@@ -28,20 +28,107 @@
 .well {
   width: 100%;
   margin-left: 30px;
+  padding: 0;
+	position: relative;
+}
+
+.hotel1{
+  background-image: url('../hotel01.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+
+.hotel2{
+  background-image: url('../hotel02.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+
+.hotel3{
+  background-image: url('../hotel03.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+
+.hotel4{
+  background-image: url('../hotel04.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+
+.hotel5{
+  background-image: url('../hotel05.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+}
+
+.hotel6{
+  background-image: url('../hotel06.jpeg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+
 }
 .tt-lista {
   margin-top: 65px;
 }
 
-.cidade{
+.well .tt{
+margin-bottom: 0;
+}
+.tt.spe {
+	position: relative;
+margin-top: 0;
+}
+.cidade {
+	text-align: left;
 }
 
 .preco{
-	text-align: right;
+	 margin-top: 0;
+    position: absolute;
+    right: 17px;
+    text-align: right;
 }
 
-.descricao{
-	
+.div-imagem{
+  width: 69%;
+}
+.descricao {
+  width:29%;
+  margin-left: 10px;
+}
+
+.well > div {
+  display: inline-block;	
+}
+.well .tt {
+	background-color: #F5F5F5;
+    border: 1px solid #E3E3E3;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    margin-bottom: 20px;
+    min-height: 20px;
+    padding: 10px;
+}
+.well .barra {
+background-color: black;
+    bottom: 0;
+    height: 116px;
+    opacity: 0.5;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
 }
 
 .sign-up, .login {
@@ -56,4 +143,33 @@
 }
 .advanced-search {
   
+}
+
+.margin-right{
+  margin-right: 0px;
+}
+.bold{
+  font-weight: bold;
+}
+
+.titulo-descricao{
+  margin-bottom: 0px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.listagem-progress{
+  margin-bottom: 0px;
+  width: 200px;
+  height: 15px;
+}
+
+.barra{
+  background-color: black;
+  opacity: 0.5;
+  width: 100%;
+}
+
+.tags{
+  float: right;
 }
