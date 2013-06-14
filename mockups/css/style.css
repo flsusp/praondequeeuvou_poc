@@ -2,7 +2,7 @@
   z-index: -1;
   width: 100%;
   position: absolute;
-  top: -30%;
+ top: -22%;
 }
 .main-features {
   margin-top: 10px;      
@@ -17,12 +17,16 @@
   text-align: center;
   margin: 0;
 }
+.search-center.hint-src {
+  text-align: left;
+padding-left: 32px;
+}
 .search-center .large-input.input-medium {
   width: 600px;
 }
 .image-body-bg .hero-unit {
   background:none;
-  text-shadow: 1px 1px 2px black, 0 0 6px #e3e3e3, 0 0 0.2em #e3e3e3;
+  text-shadow: 2px 2px 4px white, 0 0 6px white, 0 0 0.2em #e3e3e3;
   margin-top: 20%;
 }
 .well {
@@ -37,11 +41,50 @@
 }
 .search-area {
   border: 1px solid #e3e3e3;
-  background: #e3e3e3;
-  width: 800px;
-  border-radius: 8px;
-  padding-top: 15px;
+background: #e3e3e3;
+width: 800px;
+border-radius: 8px;
+padding-top: 15px;
+margin-top: 10px;
 }
 .advanced-search {
-  
+  padding-left: 32px;
+padding-bottom: 6px;
+display: inline-block;
+font-size: 14px;
+color:#555555;
+text-shadow: 0;
+width: 100%;
+}
+.advanced-search:hover {
+  text-decoration: none;
+color:#555555;
+text-shadow: 0;
+}
+.search-area .form-actions {
+  background:#e3e3e3;
+margin-top: 0;
+padding-top: 0;
+padding-left: 33px;
+}
+.search-area .control-group label {
+  color: #666666;
+font-weight: bold;
+text-shadow: none;
+
+}
+.search-area .control-group {
+  width: 42%;
+  float: left;
+  padding-left: 32px
+}
+.search-area .control-group .input-large {
+  width: 330px;
+}
+.ad-search-fields {
+  display: none;
+}
+.search-area .control-group.spiner {
+  width: 150px;
+  height: 65px;
 }
