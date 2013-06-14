@@ -5,44 +5,107 @@
     <title>search</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <link rel="stylesheet" href="https://app.divshot.com/themes/cerulean/bootstrap.css">
-    <link rel="stylesheet" href="https://app.divshot.com/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="themes/cerulean/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://app.divshot.com/js/jquery.min.js"></script>
-    <script src="https://app.divshot.com/js/bootstrap.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('.advanced-serach-btn').click(function() {
+          if ($(this).is('.clicked')) {
+            $(this).removeClass('clicked');
+            $('.btn-arrow').html('&darr;');
+            
+            $('.ad-search-fields').slideUp('fast');
+          } else {
+            $(this).addClass('clicked');
+            $('.btn-arrow').html('&uarr;');
+            
+            $('.ad-search-fields').slideDown('fast');
+          }
+          return false;
+        });
+      });
+    </script>
   </head>
   
   <body>
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">Your Company</a>
+          <a class="brand" href="#">Pra onde eu vou?</a>
           <div class="navbar-content">
             <ul class="nav ">
               <li class="active">
-                <a href="#">Home</a> 
+                <a href="#">Buscar</a> 
               </li>
               <li>
-                <a href="#">About</a> 
+                <a href="#">Sobre</a> 
               </li>
             </ul>
           </div>
+          <a class="btn login pull-right btn-inverse">Login</a>
+          <a class="btn sign-up pull-right btn-inverse">Cadastre-se</a> 
         </div>
       </div>
     </div>
-    <img src="http://static.turistipercaso.it/image/c/cuba-country/cuba-country_jxnkh.T0.jpg"
-    class="bg-image">
+    <img src="bg.jpg" class="bg-image">
     <div class="container image-body-bg">
       <div class="hero-unit hidden-phone">
-        <h1 class="search-center">Welcome to Your App!</h1>
-        <p class="search-center">We do amazing things that will make you want to give us money. Lots of
-          money.</p>
-        <p class="search-center">
-          <input type="text" class="large-input input-medium">
-          <a class="btn btn-large btn-inverse btn-al-top" href="#"><span class="btn-label">Sign Up Today!</span></a> 
-        </p>
+        <h1 class="search-center">Pra onde eu vou?</h1>
+        <div class="container search-area">
+            <p class="search-center">
+              <input type="text" class="large-input input-medium" placeholder="Ex: #praia #crianças">
+              <a class="btn btn-large btn-inverse btn-al-top" href="#"><span class="btn-label">Pesquisar</span></a> 
+            </p>
+            <p class="search-center hint-src">Digite o que você gostaria de fazer. Ex.: #praia #crianças #avião</p>
+            <a class="advanced-search" href="#"><span class="btn-label advanced-serach-btn">Busca avançada <span class="btn-arrow">&darr;</span></span></a>
+            <div class="ad-search-fields">
+              <div class="control-group">
+                <label class="control-label">Cidade Origem</label>
+                <div class="controls">
+                  <input type="text" class="input-large">
+                </div>
+              </div>
+              <div class="control-group spiner">
+                <label class="control-label">Faixa de Preço</label>
+                <div class="controls">
+                  <img src="spin_select.png" style="margin-left: -10px;"/>
+                </div>
+              </div>
+              <div class="control-group spiner">
+                <label class="control-label">Conforto</label>
+                <div class="controls">
+                  <img src="spin_select.png" style="margin-left: -10px;"/>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Período</label>
+                <div class="controls">
+                  <input type="text" class="input-large" placeholder="Ex.: 'Natal', 'Carnaval' ou 'de 10/06/2013 a 15/06/2013'">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Pessoas</label>
+                <div class="controls">
+                  <input type="text" class="input-large" placeholder="Ex.: 2 adultos e 3 crianças">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Cidade Destino</label>
+                <div class="controls">
+                  <input type="text" class="input-large">
+                </div>
+              </div>
+              <div style="clear: both;"></div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+                <input type="reset" class="btn" value="Limpar filtros"> 
+              </div>
+            </div>
       </div>
-      <a class="btn btn-large btn-primary btn-block visible-phone" href="#"><span class="btn-label">Sign Up Today!</span></a>
+      <a class="btn btn-large btn-primary btn-block visible-phone" href="#"><span class="btn-label">Pesquisar</span></a>
       <div class="row main-features">
         <div class="span4"></div>
         <div class="span4"></div>
