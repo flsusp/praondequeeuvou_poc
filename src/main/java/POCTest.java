@@ -24,6 +24,7 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.neo4j.kernel.Uniqueness;
 
 public class POCTest {
 
@@ -31,7 +32,7 @@ public class POCTest {
 	private Transaction tx;
 
 	private static enum ExampleTypes implements RelationshipType {
-		TRIP, HOSTING;
+		TRIP, HOSTING, HOSTING_BACK;
 	}
 
 	private static enum NodeTypes implements RelationshipType {
@@ -79,6 +80,10 @@ public class POCTest {
 		createTrip(campinas, saoPaulo, 1.5, 0.4, 40.0, "Linha 372");
 		createTrip(saoPaulo, santos, 0.7, 0.4, 50.0, "Linha 373");
 		createTrip(saoPaulo, caraguatatuba, 2.1, 0.3, 150.0, "Linha 374");
+		createTrip(saoPaulo, campinas, 0.4, 1.0, 430.0, "Voo 3743");
+		createTrip(santos, campinas, 2.3, 0.4, 150.0, "Linha 375");
+		createTrip(saoPaulo, campinas, 1.4, 0.7, 80.0, "Linha 376");
+		createTrip(caraguatatuba, saoPaulo, 2.3, 0.4, 150.0, "Linha 377");
 
 		// Hoteis
 		createHotel(saoPaulo, "H1", false, false, 150.0, 0.6, 0.0);
@@ -108,6 +113,9 @@ public class POCTest {
 		hosting.setProperty("children", children);
 		hosting.setProperty("name", "Hosting on " + name);
 
+		Relationship hostingBack = hotel.createRelationshipTo(city, ExampleTypes.HOSTING_BACK);
+		hostingBack.setProperty("name", "Hosting back on " + name);
+
 		return hotel;
 	}
 
@@ -128,78 +136,137 @@ public class POCTest {
 
 	public void traverse(final Node start, final double costRestriction, final boolean hasChildren,
 			final boolean hasBeach) {
-		TraversalDescription td = Traversal.description().breadthFirst()
-				.relationships(ExampleTypes.TRIP, Direction.OUTGOING)
-				.relationships(ExampleTypes.HOSTING, Direction.OUTGOING).evaluator(new Evaluator() {
+		TraversalDescription td = Traversal.traversal().uniqueness(Uniqueness.NONE).breadthFirst()
+				.expand(Traversal.expanderForAllTypes(Direction.OUTGOING)).evaluator(new Evaluator() {
 
 					@Override
 					public Evaluation evaluate(Path path) {
+						Node start = path.startNode();
 						Node end = path.endNode();
 						NodeTypes type = NodeTypes.valueOf((String) end.getProperty("type"));
 
-						if (type == NodeTypes.CITY) {
-							return Evaluation.EXCLUDE_AND_CONTINUE;
+						// print(path);
+
+						if (!validateUniqueHotel(path)) {
+							return Evaluation.EXCLUDE_AND_PRUNE;
+						}
+
+						if (start.equals(end) && containsHotel(path.nodes())) {
+							return Evaluation.INCLUDE_AND_PRUNE;
+						} else if (type == NodeTypes.CITY) {
+							if (validateCity(path, end)) {
+								return Evaluation.EXCLUDE_AND_CONTINUE;
+							} else {
+								return Evaluation.EXCLUDE_AND_PRUNE;
+							}
 						} else {
 							if (((Boolean) path.endNode().getProperty("children")) == hasChildren
 									&& ((Boolean) path.endNode().getProperty("beach")) == hasBeach) {
-								return Evaluation.INCLUDE_AND_CONTINUE;
-							} else {
 								return Evaluation.EXCLUDE_AND_CONTINUE;
-							}
-						}
-					}
-				}).sort(new Comparator<Path>() {
-
-					@Override
-					public int compare(Path o1, Path o2) {
-						return getCost(o1).compareTo(getCost(o2));
-					}
-
-					public Double getCost(Path path) {
-						double cost = 0.0;
-						for (Relationship relationship : path.relationships()) {
-							cost += getCost(relationship);
-						}
-						return cost;
-					}
-
-					public Double getCost(Relationship relationship) {
-						if (relationship.getType().equals(ExampleTypes.TRIP)) {
-							double time = (Double) relationship.getProperty("time");
-							double confort = (Double) relationship.getProperty("confort");
-							double price = (Double) relationship.getProperty("price");
-
-							if (hasChildren) {
-								return 2 * time - 3 * confort + price / 1000;
 							} else {
-								return 3 * time - 2 * confort + price / 1000;
-							}
-						} else if (relationship.getType().equals(ExampleTypes.HOSTING)) {
-							double children = (Double) relationship.getProperty("children");
-							double confort = (Double) relationship.getProperty("confort");
-							double price = (Double) relationship.getProperty("price");
-
-							if (hasChildren) {
-								return -5 * children - 3 * confort + price / 1000;
-							} else {
-								return -2 * confort + price / 1000;
+								return Evaluation.EXCLUDE_AND_PRUNE;
 							}
 						}
-						throw new RuntimeException();
+					}
+
+					private boolean validateUniqueHotel(Path path) {
+						boolean hasHotel = false;
+						for (Node node : path.nodes()) {
+							NodeTypes type = NodeTypes.valueOf((String) node.getProperty("type"));
+							if (type == NodeTypes.HOTEL && hasHotel) {
+								return false;
+							} else if (type == NodeTypes.HOTEL) {
+								hasHotel = true;
+							}
+						}
+						return true;
+					}
+
+					private boolean validateCity(Path path, Node end) {
+						boolean adjacent = false;
+						for (Node node : path.nodes()) {
+							NodeTypes type = NodeTypes.valueOf((String) node.getProperty("type"));
+							if (type == NodeTypes.CITY && node.equals(end)) {
+								if (adjacent) {
+									return false;
+								} else {
+									adjacent = true;
+								}
+							} else if (type == NodeTypes.HOTEL) {
+								adjacent = false;
+							}
+						}
+						return true;
+					}
+
+					private boolean containsHotel(Iterable<Node> nodes) {
+						for (Node node : nodes) {
+							NodeTypes type = NodeTypes.valueOf((String) node.getProperty("type"));
+							if (type == NodeTypes.HOTEL) {
+								return true;
+							}
+						}
+						return false;
 					}
 				});
+		td.sort(new Comparator<Path>() {
+
+			@Override
+			public int compare(Path o1, Path o2) {
+				return getCost(o1).compareTo(getCost(o2));
+			}
+
+			public Double getCost(Path path) {
+				double cost = 0.0;
+				for (Relationship relationship : path.relationships()) {
+					cost += getCost(relationship);
+				}
+				return cost;
+			}
+
+			public Double getCost(Relationship relationship) {
+				if (relationship.getType().equals(ExampleTypes.TRIP)) {
+					double time = (Double) relationship.getProperty("time");
+					double confort = (Double) relationship.getProperty("confort");
+					double price = (Double) relationship.getProperty("price");
+
+					if (hasChildren) {
+						return 2 * time - 3 * confort + price / 1000;
+					} else {
+						return 3 * time - 2 * confort + price / 1000;
+					}
+				} else if (relationship.getType().equals(ExampleTypes.HOSTING)) {
+					double children = (Double) relationship.getProperty("children");
+					double confort = (Double) relationship.getProperty("confort");
+					double price = (Double) relationship.getProperty("price");
+
+					if (hasChildren) {
+						return -5 * children - 3 * confort + price / 1000;
+					} else {
+						return -2 * confort + price / 1000;
+					}
+				} else if (relationship.getType().equals(ExampleTypes.HOSTING_BACK)) {
+					return 0.0;
+				}
+				throw new RuntimeException();
+			}
+		});
 		Traverser t = td.traverse(start);
 		Iterator<Path> it = t.iterator();
 		while (it.hasNext()) {
 			Path path = it.next();
-			System.out.println(path.startNode().getProperty("name"));
-
-			for (Relationship relationship : path.relationships()) {
-				System.out.println("\t" + relationship.getType() + " - " + relationship.getProperty("name"));
-			}
-
-			System.out.println(path.endNode().getProperty("name"));
+			print(path);
 		}
+	}
+
+	private static void print(Path path) {
+		System.out.println(path.startNode().getProperty("name"));
+
+		for (Relationship relationship : path.relationships()) {
+			System.out.println("\t" + relationship.getType() + " - " + relationship.getProperty("name"));
+		}
+
+		System.out.println(path.endNode().getProperty("name"));
 	}
 
 	public void findCheapestPathsWithDijkstra(final Node nodeA, final Node nodeB, final double costRestriction,
