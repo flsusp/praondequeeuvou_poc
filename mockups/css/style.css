@@ -1,0 +1,33 @@
+.bg-image {
+  z-index: -1;
+  width: 100%;
+  position: absolute;
+  top: -30%;
+}
+.main-features {
+  margin-top: 10px;      
+}
+.large-input.input-medium {
+  height: 35px
+}
+.btn-al-top {
+  vertical-align: top;
+}
+.search-center {
+  text-align: center;
+}
+.search-center .large-input.input-medium {
+  width: 600px;
+}
+.image-body-bg .hero-unit {
+  background:none;
+  text-shadow: 1px 1px 2px black, 0 0 6px #e3e3e3, 0 0 0.2em #e3e3e3;
+  margin-top: 20%;
+}
+.well {
+  width: 100%;
+  margin-left: 30px;
+}
+.tt-lista {
+  margin-top: 65px;
+}
